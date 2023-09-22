@@ -41,14 +41,27 @@ export function activate(context: vscode.ExtensionContext) {
             token.start <= offset &&
             token.start + token.content.length >= offset
           ) {
+            // escape '`' for markdown code block
+            const longestMatchLength =
+              token.content
+                .match(/`+/g)
+                ?.reduce((a, b) => (a.length > b.length ? a : b)).length ?? 0;
+            const codeblockBorderLength =
+              longestMatchLength >= 3 ? longestMatchLength + 1 : 3;
+
+            // the markdown result
+            const md = [
+              `${"`".repeat(codeblockBorderLength)}txt`,
+              `${JSON.parse(token.content)}`,
+              `${"`".repeat(codeblockBorderLength)}`,
+            ].join("\n");
+
+            if (debug) {
+              console.log(md);
+            }
+
             return {
-              contents: [
-                new vscode.MarkdownString().appendCodeblock(
-                  // use JSON.parse to eval all escaped characters
-                  JSON.parse(token.content),
-                  "txt"
-                ),
-              ],
+              contents: [md],
             };
           }
         }

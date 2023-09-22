@@ -2,7 +2,16 @@
   "name": "json-hover",
   "displayName": "json-hover",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "publisher": "DiscreteTom",
+  "author": {
+    "name": "DiscreteTom",
+    "email": "discrete_tom@outlook.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DiscreteTom/json-hover.git"
+  },
   "engines": {
     "vscode": "^1.82.0"
   },

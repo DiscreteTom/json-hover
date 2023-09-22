@@ -1,26 +1,59 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
+import { Lexer } from "retsac";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+const debug = process.env.VSCODE_DEBUG_MODE === "true";
+
+const lexer = new Lexer.Builder()
+  .ignore(Lexer.whitespaces) // ignore blank characters
+  .define({
+    string: Lexer.stringLiteral(`"`), // double quote string literal
+    number: /^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?/,
+  })
+  .define(Lexer.wordType("true", "false", "null")) // type's name is the literal value
+  .anonymous(Lexer.exact(..."[]{},:")) // single char borders
+  .build({ debug });
+
 export function activate(context: vscode.ExtensionContext) {
+  context.subscriptions.push(
+    vscode.languages.registerHoverProvider("json", {
+      provideHover(document, position, token) {
+        const text = document.getText();
+        const offset = document.offsetAt(position);
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "json-hover" is now active!');
+        if (debug) {
+          console.log(`offset: ${offset}`);
+        }
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('json-hover.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from json-hover!');
-	});
+        lexer.reset().feed(text);
 
-	context.subscriptions.push(disposable);
+        while (true) {
+          const token = lexer.lex();
+          if (token === null) {
+            break;
+          }
+
+          if (debug) {
+            console.log(token);
+          }
+
+          if (
+            token.type === "string" &&
+            token.start <= offset &&
+            token.start + token.content.length >= offset
+          ) {
+            return {
+              contents: [
+                new vscode.MarkdownString().appendText(
+                  // use JSON.parse to eval all escaped characters
+                  JSON.parse(token.content)
+                ),
+              ],
+            };
+          }
+        }
+      },
+    })
+  );
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}

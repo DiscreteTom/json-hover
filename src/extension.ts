@@ -27,6 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
         lexer.reset().feed(text);
 
         // perf: jump to the start of the target line, instead of lexing the whole file
+        // since JSON doesn't allow multi-line string
         const lineStartOffset = document.offsetAt(
           new vscode.Position(position.line, 0)
         );

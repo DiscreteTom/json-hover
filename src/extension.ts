@@ -43,9 +43,10 @@ export function activate(context: vscode.ExtensionContext) {
           ) {
             return {
               contents: [
-                new vscode.MarkdownString().appendText(
+                new vscode.MarkdownString().appendCodeblock(
                   // use JSON.parse to eval all escaped characters
-                  JSON.parse(token.content)
+                  JSON.parse(token.content),
+                  "txt"
                 ),
               ],
             };

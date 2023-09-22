@@ -6,7 +6,7 @@
 
 VSCode extension to show string values on hover for JSON files.
 
-This is useful to convert escaped strings to their unescaped values (e.g. `\n` and `\"`).
+This is useful to inspect the unescaped value for escaped strings (e.g. `\n`, `\\` and `\"`).
 
 ![Example](img/example.png)
 

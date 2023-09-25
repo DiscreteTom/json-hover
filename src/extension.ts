@@ -53,6 +53,14 @@ export function activate(context: vscode.ExtensionContext) {
             token.start <= offset &&
             token.start + token.content.length >= offset
           ) {
+            // don't show hover if the string is not escaped
+            if (token.content.indexOf("\\") === -1) {
+              if (debug) {
+                console.log(`unescaped string: ${token.content}}`);
+              }
+              return;
+            }
+
             // escape '`' for markdown code block
             const longestMatchLength =
               token.content

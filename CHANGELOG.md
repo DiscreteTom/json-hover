@@ -3,7 +3,7 @@
 ## v0.1.1
 
 - Feat: optimize display effect using code block instead of markdown text.
-- Perf: jump to the target line before lexing.
+- Perf: jump to the target line before lexing since JSON doesn't allow multi-line string.
 
 ## v0.1.0
 

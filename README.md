@@ -1,3 +1,6 @@
+> **Note**
+> This extension is deprecated. Use [string-hover](https://marketplace.visualstudio.com/items?itemName=DiscreteTom.string-hover) instead for better performance and more features.
+
 # json-hover
 
 [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/DiscreteTom.json-hover?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=DiscreteTom.json-hover)

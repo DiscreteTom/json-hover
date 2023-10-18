@@ -1,5 +1,9 @@
 # Change Log
 
+## v0.1.3
+
+Deprecated.
+
 ## v0.1.2
 
 - Feat: don't show hover if there is no `\` in the string content.
